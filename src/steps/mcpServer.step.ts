@@ -38,7 +38,7 @@ const gitlabTools = [
 ];
 
 Given(/^User navigates the Obot main login page$/, async() => {
-	const url = process.env.mainURL ; 
+	const url = process.env.localHostURL ; 
 	await browser.url(url);
 });
 

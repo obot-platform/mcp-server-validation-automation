@@ -59,7 +59,7 @@ export const config: WebdriverIO.Config = {
                 "--incognito",
                 '--disable-infobars',
                 "--window-size=1920,1080",
-            //    '--headless',
+               '--headless',
                 '--no-sandbox',
                 '--disable-gpu',
                 '--disable-setuid-sandbox',
