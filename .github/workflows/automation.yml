@@ -10,28 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write       # Required for gh-pages deploy
-      pages: write          # Required for pages deploy
-      id-token: write       # Required for actions/deploy-pages
+      contents: write # Required for gh-pages deploy
+      pages: write # Required for pages deploy
+      id-token: write # Required for actions/deploy-pages
       actions: read
       checks: read
 
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
-      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Cache NPM Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
@@ -39,21 +34,21 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io curl jq
-          docker --version
+        uses: docker/setup-docker@v4
 
-      - name: Login to GitHub Container Registry
-        run: |
-          echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Run OBOT container
         run: |
           docker run -d --name obot \
             -p 8080:8080 \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -e OPENAI_API_KEY=$OPENAI_API_KEY \
+            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
             ghcr.io/obot-platform/obot:latest
 
       - name: Wait for OBOT to be ready
@@ -92,7 +87,7 @@ jobs:
 
       - name: Deploy Allure Report to GitHub Pages
         if: always()
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
