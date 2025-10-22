@@ -1,0 +1,10 @@
+prompt
+Is GitLab tool connected?
+List all projects available in my GitLab account.
+Create a new project named GitLab_Test_AUtomation with description Testing Automation MCP API integration.
+Update the project GitLab_Test_AUtomation to make it private.
+Create a new branch named feature/test-mcp-automation from the main branch in the GitLab_Test_AUtomation project.
+List all branches in the project GitLab_Test_AUtomation.
+Get branch diffs between feature/test-mcp-automation and main.
+Create a new file named test.txt in the main branch with content: Hello MCP GitLab!.
+Update the file test.txt in the main branch with content: File updated via MCP server.
