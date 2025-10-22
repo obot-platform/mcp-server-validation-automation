@@ -1,0 +1,100 @@
+name: Run WDIO Tests with OBOT Docker
+
+on:
+  workflow_dispatch:
+  # repository_dispatch:
+  #   types: [pr-created]
+
+jobs:
+  wdio-tests:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write       # Required for gh-pages deploy
+      pages: write          # Required for pages deploy
+      id-token: write       # Required for actions/deploy-pages
+      actions: read
+      checks: read
+
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache NPM Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io curl jq
+          docker --version
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
+
+      - name: Run OBOT container
+        run: |
+          docker run -d --name obot \
+            -p 8080:8080 \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -e OPENAI_API_KEY=$OPENAI_API_KEY \
+            ghcr.io/obot-platform/obot:latest
+
+      - name: Wait for OBOT to be ready
+        run: |
+          echo "Waiting for OBOT container..."
+          for i in {1..12}; do
+            if curl -sf http://localhost:8080/api/me | grep -q '"username":"nobody"'; then
+              echo "OBOT API is ready."
+              break
+            fi
+            echo "Not ready yet... retry #$i"
+            sleep 5
+          done
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run WDIO Tests
+        run: npm run wdio:byScenario
+
+      - name: Upload MCP Server Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: MCP-Server-Reports
+          path: MCP Server Reports/*
+
+      - name: Generate Allure Report
+        run: |
+          npx allure generate allure-results --clean -o allure-report || echo "Allure generation failed"
+
+      - name: Upload Allure Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Allure-Report
+          path: allure-report
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
+          keep_files: false
