@@ -38,7 +38,7 @@ const gitlabTools = [
 ];
 
 Given(/^User navigates the Obot main login page$/, async() => {
-	const url = process.env.localHostURL ; 
+	const url = process.env.OBOT_URL ; 
 	await browser.url(url);
 });
 
@@ -72,9 +72,9 @@ Then(/^User select "([^"]*)" button$/, async (Button) => {
 });
 
 Then(/^User connect to the WordPress1 MCP server$/, async () => {
-	await slowInputFilling(Selectors.MCP.wpSiteURL,process.env.WPURL);
-	await slowInputFilling(Selectors.MCP.wpUsername,process.env.WPUsername);
-	await slowInputFilling(Selectors.MCP.wpPassword, process.env.WPPassword);
+	await slowInputFilling(Selectors.MCP.wpSiteURL,process.env.WP_URL);
+	await slowInputFilling(Selectors.MCP.wpUsername,process.env.WP_USERNAME);
+	await slowInputFilling(Selectors.MCP.wpPassword, process.env.WP_PASSWORD);
 	await clickToElement(Selectors.MCP.btnClick("Launch"));
 	await browser.pause(LONG_PAUSE*2);
 });
@@ -86,7 +86,7 @@ Then(/^User asks obot "([^"]*)"$/, async (prompt) => {
 });
 
 Then(/^User connect to the GitLab MCP server$/, async () => {
-	await slowInputFilling(Selectors.MCP.gitlabToken,process.env.gitLabToken);
+	await slowInputFilling(Selectors.MCP.gitlabToken,process.env.GITLAB_TOKEN);
 	await clickToElement(Selectors.MCP.btnClick("Launch"));
 	await browser.pause(LONG_PAUSE);
 });
