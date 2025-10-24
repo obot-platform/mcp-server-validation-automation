@@ -10,5 +10,5 @@ env.json
 allure-results
 allure-report
 logs
-package-lock.json
+# package-lock.json
 MCP Server Reports

@@ -148,7 +148,8 @@ export function aggregateToolResponses(promptResults: any[]) {
       };
     }
 
-    const toolsToUse = tools.length > 0 ? tools : ['NO_TOOL'];
+    const safeTools: string[] = Array.isArray(tools) ? tools : [];
+    const toolsToUse = safeTools.length > 0 ? safeTools : ['NO_TOOL'];
 
     for (const tool of toolsToUse) {
       if (!report[promptKey].tools[tool]) {

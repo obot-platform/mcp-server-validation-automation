@@ -7,7 +7,7 @@ Feature: Connecte MCP server on Obot
 
     Scenario: Validate Wordpress sequential prompts on Obot
         When User open MCP connector page
-        And User select "WordPress1" MCP server
+        And User select "WordPress" MCP server
         And User select "Connect To Server" button
         And User connect to the WordPress1 MCP server 
         When User sends following prompts to Obot AI chat for "Wordpress" MCP server:

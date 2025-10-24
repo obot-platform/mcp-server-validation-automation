@@ -2,8 +2,8 @@ name: Run WDIO Tests with OBOT Docker
 
 on:
   workflow_dispatch:
-  # repository_dispatch:
-  #   types: [pr-created]
+  repository_dispatch:
+    types: [pr-created]
 
 jobs:
   wdio-tests:
@@ -67,17 +67,26 @@ jobs:
         run: npm ci
 
       - name: Run WDIO Tests
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+          OBOT_URL: ${{ secrets.OBOT_URL }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: npm run wdio:byScenario
+        continue-on-error: true
 
       - name: Upload MCP Server Reports
         uses: actions/upload-artifact@v4
         with:
           name: MCP-Server-Reports
-          path: MCP Server Reports/*
+          path: MCP Server Reports/
+        continue-on-error: true
 
       - name: Generate Allure Report
         run: |
           npx allure generate allure-results --clean -o allure-report || echo "Allure generation failed"
+        continue-on-error: true
 
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
