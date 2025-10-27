@@ -8,8 +8,8 @@ import { ELEMENT_TIMEOUT } from './timeouts';
 export async function sendPromptAndWaitForReply(promptText: string) {
   const prevReplies = await $$(Selectors.MCP.lastBotReply);
   let lastTextBefore = "";
-  if (prevReplies.length > 0) {
-    lastTextBefore = await prevReplies[prevReplies.length - 1].getText();
+  if (await prevReplies.length > 0) {
+    lastTextBefore = await prevReplies[await prevReplies.length - 1].getText();
   }
 
   // Focus input and send message
@@ -22,9 +22,9 @@ export async function sendPromptAndWaitForReply(promptText: string) {
   // Wait for a new reply to appear
   await browser.waitUntil(async () => {
     const botReplyElements = await $$(Selectors.MCP.lastBotReply);
-    if (botReplyElements.length === 0) return false;
-    const lastText = await botReplyElements[botReplyElements.length - 1].getText();
-    if (prevReplies.length === 0) return lastText.length > 0;
+    if (await botReplyElements.length === 0) return false;
+    const lastText = await botReplyElements[await botReplyElements.length - 1].getText();
+    if (await prevReplies.length === 0) return lastText.length > 0;
     return lastText && lastText !== lastTextBefore;
   }, {
     timeout: 30000,
@@ -37,8 +37,8 @@ export async function sendPromptAndWaitForReply(promptText: string) {
   let stableCount = 0;
   await browser.waitUntil(async () => {
     const botReplyElements = await $$(Selectors.MCP.lastBotReply);
-    if (botReplyElements.length === 0) return false;
-    const newestText = await botReplyElements[botReplyElements.length - 1].getText();
+    if (await botReplyElements.length === 0) return false;
+    const newestText = await botReplyElements[await botReplyElements.length - 1].getText();
     if (newestText === lastText) stableCount++;
     else {
       stableCount = 0;
@@ -53,8 +53,8 @@ export async function sendPromptAndWaitForReply(promptText: string) {
 
   // Return the stabilized latest reply text
   const botReplyElements = await $$(Selectors.MCP.lastBotReply);
-  return botReplyElements.length > 0
-    ? await botReplyElements[botReplyElements.length - 1].getText()
+  return await botReplyElements.length > 0
+    ? await botReplyElements[await botReplyElements.length - 1].getText()
     : "";
 }
 
@@ -95,7 +95,7 @@ export async function sendPromptValidateAndCollect(promptText: string, toolList:
 
   // Get latest message element (reply)
   const promptReplies = await $$('//div[@class="message-content"]');
-  const currReply = promptReplies[promptReplies.length - 1];
+  const currReply = promptReplies[await promptReplies.length - 1];
   if (!currReply) throw new Error(`No reply container found even after waiting for prompt: "${promptText}"`);
 
   // Validation regex

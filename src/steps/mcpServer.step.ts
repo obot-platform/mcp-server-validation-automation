@@ -3,39 +3,8 @@ import Selectors from "../core/selectors";
 import { clickToElement,isElementDisplayed,slowInputFilling} from "../core/func";
 import { LONG_PAUSE, SHORT_PAUSE } from "../core/timeouts";
 import { aggregateToolResponses, saveMCPReport, sendPromptValidateAndCollect } from "../core/mcpFunc";
-
-let responses: string[] = [];
-const wordpressTools = [
-  "create_category", "create_post", "create_tag",
-  "delete_category", "delete_media", "delete_post", "delete_tag",
-  "get_me", "get_site_settings",
-  "list_categories", "list_media", "list_posts", "list_tags", "list_users",
-  "retrieve_post", "update_category", "update_media", "update_post", "update_tag",
-  "validate_credential"
-];
-
-const gitlabTools = [
-  "search_repositories",
-  "create_repository",
-  "get_project",
-  "list_projects",
-  "get_file_contents",
-  "create_or_update_file",
-  "push_files",
-  "get_repository_tree",
-  "create_branch",
-  "create_issue",
-  "list_issues",
-  "update_issue",
-  "create_merge_request",
-  "list_merge_requests",
-  "get_merge_request",
-  "merge_merge_request",
-  "update_merge_request",
-  "create_merge_request_thread",
-  "fork_repository",
-  "get_users"
-];
+import path from 'path';
+import { promises as fs } from 'fs';
 
 Given(/^User navigates the Obot main login page$/, async() => {
 	const url = process.env.OBOT_URL ; 
@@ -56,10 +25,10 @@ Then(/^User select "([^"]*)" MCP server$/, async (MCPServer) => {
 	await isElementDisplayed(Selectors.MCP.selectMCPServer(MCPServer), LONG_PAUSE);
 	// Wait until matching elements appear
 	const allServers = await $$(Selectors.MCP.selectMCPServer(MCPServer));
-	if (allServers.length === 0) throw new Error(`No MCP server found matching: ${MCPServer}`);
+	if (await allServers.length === 0) throw new Error(`No MCP server found matching: ${MCPServer}`);
 
 	// Click the last one
-	const lastServer = allServers[allServers.length - 1];
+	const lastServer = allServers[await allServers.length - 1];
 	await lastServer.waitForDisplayed({ timeout: LONG_PAUSE });
 	await lastServer.click();
 
@@ -91,18 +60,19 @@ Then(/^User connect to the GitLab MCP server$/, async () => {
 	await browser.pause(LONG_PAUSE);
 });
 
-When(/^User sends following prompts to Obot AI chat for "([^"]*)" MCP server:$/, { timeout: 15 * 60 * 1000 }, async function(serverName: string, table) {
-  const prompts = table.raw().slice(1).map((row: any[]) => row[0]);
-  this.promptResults = [];
-  let toolList;
+When(/^User sends prompts to Obot AI chat for "([^"]*)" MCP server$/, { timeout: 15 * 60 * 1000 }, async function(serverName: string) {
+  const jsonPath = path.resolve(process.cwd(), 'src', 'data', `${serverName.toLowerCase()}.MCP.json`);
+  const data = await fs.readFile(jsonPath, 'utf-8');
+  const { prompts, tools } = JSON.parse(data);
 
-  toolList =`${serverName.toLowerCase()}Tools`;
+  this.promptResults = [];
+  const toolList = tools
 
   for (let i = 0; i < prompts.length; i++) {
     try {
       const result = await sendPromptValidateAndCollect(prompts[i], toolList, i);
       this.promptResults.push(result);
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Error in prompt #${i+1}: ${err.message}`);
       this.promptResults.push({ prompt: prompts[i], error: err.message });
     }
