@@ -6,7 +6,7 @@
     "wdio:all": "wdio run wdio.conf.ts",
     "wdio:byScenario": "wdio run wdio.conf.ts --spec src/features/mcpServer.feature",
     "test:report": "npx allure generate --clean allure-results && npx allure open",
-    "eval": "python auto_eval.py"
+    "eval": "npx ts-node auto_eval.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",
@@ -40,10 +40,12 @@
   "dependencies": {
     "axios": "^1.13.0",
     "fix-esm": "^1.0.1",
+    "glob": "^11.0.3",
     "google-auth-library": "^10.4.2",
     "googleapis": "^164.1.0",
     "imap-simple": "^5.1.0",
     "mailparser": "^3.7.5",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "openai": "^6.7.0"
   }
 }
