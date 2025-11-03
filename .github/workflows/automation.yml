@@ -33,9 +33,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install Docker
-        uses: docker/setup-docker@v4
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
