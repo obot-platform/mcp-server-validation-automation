@@ -27,7 +27,7 @@
     "allure-commandline": "^2.34.1",
     "chai": "^6.2.0",
     "dotenv": "^17.2.3",
-    "eslint": "^9.38.0",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-wdio": "^9.16.2",
