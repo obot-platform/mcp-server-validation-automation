@@ -70,6 +70,7 @@ jobs:
           WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
           OBOT_URL: ${{ secrets.OBOT_URL }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY}}
         run: |
           npm run wdio:byScenario
           npm run eval
