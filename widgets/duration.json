@@ -1,0 +1,1 @@
+[{"uid":"b5394431403e61ae","name":"Validate Wordpress sequential prompts on Obot","time":{"start":1762186753379,"stop":1762186881590,"duration":128211},"status":"passed","severity":"normal"},{"uid":"a9042d0606cdda6f","name":"Validate GitLab sequential prompts on Obot","time":{"start":1762186881593,"stop":1762187157214,"duration":275621},"status":"passed","severity":"normal"}]
