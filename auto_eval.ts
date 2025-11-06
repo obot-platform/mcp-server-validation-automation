@@ -44,7 +44,6 @@ interface GradeInfo {
 
 interface ToolData {
   responses?: string[];
-  errors?: string[];
   task_done?: boolean | null;
   failure_reason?: string[];
   status?: string;
@@ -118,10 +117,7 @@ async function enhanceReportWithEval(
       // Merge reasons
       const reasons: string[] = [];
       if (gradeInfo.reason) reasons.push(gradeInfo.reason);
-      if (toolData.errors?.length) reasons.push(...toolData.errors);
-
       toolData.failure_reason = reasons;
-      delete toolData.errors;
 
       // Set status based on grading
       if (gradeInfo.result === "FAILURE") toolData.status = "Failure";

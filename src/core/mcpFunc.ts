@@ -119,7 +119,6 @@ export async function sendPromptValidateAndCollect(promptText: string, toolList:
     replyElement: currReply,
     tools: toolsTexts,
     status: hasSuccess ? 'Success' : (hasFailure ? 'Failure' : 'Unknown'),
-    error: errorMessage || null,
   };
 }
 
@@ -131,13 +130,13 @@ function maxStatus(s1: string, s2: string): string {
 export function aggregateToolResponses(promptResults: any[]) {
   const report: Record<string, {
     promptText: string,
-    tools: Record<string, { responses: string[]; status: string; errors: string[] }>
+    tools: Record<string, { responses: string[]; status: string }>
   }> = {};
 
   for (let i = 0; i < promptResults.length; i++) {
     const result = promptResults[i];
-    const { prompt, tools, reply, status, error } = result;
-    if (!reply && !error) continue;
+    const { prompt, tools, reply, status } = result;
+    if (!reply) continue;
 
     const promptKey = `Prompt #${i + 1}`;
 
@@ -153,11 +152,10 @@ export function aggregateToolResponses(promptResults: any[]) {
 
     for (const tool of toolsToUse) {
       if (!report[promptKey].tools[tool]) {
-        report[promptKey].tools[tool] = { responses: [], status: 'Unknown', errors: [] };
+        report[promptKey].tools[tool] = { responses: [], status: 'Unknown'};
       }
 
       if (reply) report[promptKey].tools[tool].responses.push(reply);
-      if (error) report[promptKey].tools[tool].errors.push(error);
 
       report[promptKey].tools[tool].status =
         maxStatus(status, report[promptKey].tools[tool].status);
@@ -170,7 +168,7 @@ export function aggregateToolResponses(promptResults: any[]) {
 export function saveMCPReport(mcpName: string, reportJson: any) {
   const folderName = `MCP Server Reports`;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const fileName = `${mcpName}_MCP_Report_${timestamp}.json`;
+  const fileName = `${mcpName.toLowerCase().replace(/\s+/g, '_')}_MCP_Report_${timestamp}.json`;
   const dirPath = path.join(process.cwd(), folderName);
   const filePath = path.join(dirPath, fileName);
 
