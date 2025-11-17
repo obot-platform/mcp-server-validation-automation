@@ -68,7 +68,7 @@ export async function sendPromptValidateAndCollect(promptText: string, toolList:
 
   // Send and wait for reply
   const reply = await sendPromptAndWaitForReply(promptText);
-  await browser.pause(2000);
+  await browser.pause(10000);
 
   // Wait until a new message-content div appears
   await browser.waitUntil(async () => {
@@ -98,27 +98,12 @@ export async function sendPromptValidateAndCollect(promptText: string, toolList:
   const currReply = promptReplies[await promptReplies.length - 1];
   if (!currReply) throw new Error(`No reply container found even after waiting for prompt: "${promptText}"`);
 
-  // Validation regex
-  const successRegex = /(success|completed|connected|created|retrieved|posted|updated|closed|deleted|functioning|valid|available|ready to use)/i;
-  const failureRegex = /(not valid|failed|error|cannot access|do not have|insufficient|not available|required|troubleshooting)/i;
-
-  const hasSuccess = successRegex.test(reply);
-  const hasFailure = failureRegex.test(reply);
-
-  let errorMessage = '';
-  if (!hasSuccess && !hasFailure) {
-    errorMessage = `No success or actionable failure detected in prompt #${index + 1} response.`;
-  }
-
-  console.log(`Prompt #${index + 1}: Tools used: ${toolsTexts.length ? toolsTexts.join(', ') : 'None'} | Status: ${hasSuccess ? 'Success' : (hasFailure ? 'Failure' : 'Unknown')}`);
-
   // Return data for reporting
   return {
     prompt: promptText,
     reply,
     replyElement: currReply,
     tools: toolsTexts,
-    status: hasSuccess ? 'Success' : (hasFailure ? 'Failure' : 'Unknown'),
   };
 }
 
@@ -130,12 +115,12 @@ function maxStatus(s1: string, s2: string): string {
 export function aggregateToolResponses(promptResults: any[]) {
   const report: Record<string, {
     promptText: string,
-    tools: Record<string, { responses: string[]; status: string }>
+    tools: Record<string, { responses: string[] }>
   }> = {};
 
   for (let i = 0; i < promptResults.length; i++) {
     const result = promptResults[i];
-    const { prompt, tools, reply, status } = result;
+    const { prompt, tools, reply } = result;
     if (!reply) continue;
 
     const promptKey = `Prompt #${i + 1}`;
@@ -152,13 +137,10 @@ export function aggregateToolResponses(promptResults: any[]) {
 
     for (const tool of toolsToUse) {
       if (!report[promptKey].tools[tool]) {
-        report[promptKey].tools[tool] = { responses: [], status: 'Unknown'};
+        report[promptKey].tools[tool] = { responses: []};
       }
 
       if (reply) report[promptKey].tools[tool].responses.push(reply);
-
-      report[promptKey].tools[tool].status =
-        maxStatus(status, report[promptKey].tools[tool].status);
     }
   }
 

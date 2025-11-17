@@ -1,24 +1,34 @@
-Feature: Connect MCP server on Obot
+Feature: Connect MCP servers on Obot
 
     Background: Navigate to Obot
         Given I setup context for assertion
-        When User navigates the Obot main login page
-        Then User open chat Obot
+        When User navigates to the Obot main login page
+        Then User opens chat Obot
+        And User creates a new Project with no existing connections
 
-    @wordpress
-    Scenario: Validate Wordpress sequential prompts on Obot
-        When User open MCP connector page
-        And User select "WordPress" MCP server
-        And User select "Connect To Server" button
-        And User connect to the WordPress MCP server
-        When User sends prompts to Obot AI chat for "Wordpress" MCP server
-        Then All prompts results should be validated and report generated for selected "Wordpress" MCP Server
+    Scenario Outline: Validate <ServerName> sequential prompts on Obot
+        When User opens the MCP connector page
+        And User selects "<ServerName>" MCP server
+        And User selects "Connect To Server" button
+        And User connects to the "<ConnectionName>" MCP server
+        When User sends prompts to Obot AI chat for "<PromptName>" MCP server
+        Then All prompt results should be validated and a report generated for the selected "<ReportName>" MCP server
 
-    @gitlab
-    Scenario: Validate GitLab sequential prompts on Obot
-        When User open MCP connector page
-        And User select "GitLab" MCP server
-        And User select "Connect To Server" button
-        And User connect to the GitLab MCP server
-        When User sends prompts to Obot AI chat for "Gitlab" MCP server
-        Then All prompts results should be validated and report generated for selected "Gitlab" MCP Server
+        Examples:
+            | ServerName                         | ConnectionName                     | PromptName       | ReportName       |
+            | WordPress                          | WordPress                          | WordPress        | WordPress        |
+            | GitLab                             | GitLab                             | GitLab           | GitLab           |
+            | BigQuery Toolbox                   | BigQuery                           | BigQuery Toolbox | BigQuery Toolbox |
+            # | Datadog                            | Datadog                            | Datadog          | Datadog          |
+            | Databricks Unity Catalog Functions | Databricks Unity Catalog Functions | Databrick Unity  | Databrick Unity  |
+            | Databricks Genie Spaces            | Databricks Genie Space             | Databrick Genie  | Databrick Genie  |
+            | Databricks Vector Search           | Databricks Vector Space            | Databrick Vector | Databrick Vector |
+            | Brave Search                       | Brave Search                       | Brave Search     | Brave Search     |
+            | Chroma Cloud                       | Chroma Cloud                       | Chroma Cloud     | Chroma Cloud     |
+            | Firecrawl                          | Firecrawl                          | Firecrawl        | Firecrawl        |
+            | GitMCP                             | GitMCP                             | GitMCP           | GitMCP           |
+            | Redis                              | Redis                              | Redis            | Redis            |
+            # | Postman                            | Postman                            | Postman          | Postman          |
+            | Tavily Search                      | Tavily Search                      | Tavily Search    | Tavily Search    |
+            | Exa Search                         | Exa Search                         | Exa Search       | Exa Search       |
+            | DeepWiki                           | DeepWiki                           | DeepWiki         | DeepWiki         |   
