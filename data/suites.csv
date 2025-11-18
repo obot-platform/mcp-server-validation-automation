@@ -1,3 +1,3 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","243352","Validate GitLab sequential prompts on Obot","Connecte MCP server on Obot","Wed Nov 05 01:22:27 UTC 2025","passed","Wed Nov 05 01:26:30 UTC 2025","","","",""
-"","129426","Validate Wordpress sequential prompts on Obot","Connecte MCP server on Obot","Wed Nov 05 01:20:17 UTC 2025","passed","Wed Nov 05 01:22:27 UTC 2025","","","",""
+"","259712","Validate GitLab sequential prompts on Obot","Connecte MCP server on Obot","Tue Nov 18 20:25:43 UTC 2025","passed","Tue Nov 18 20:30:03 UTC 2025","","","",""
+"","131709","Validate Wordpress sequential prompts on Obot","Connecte MCP server on Obot","Tue Nov 18 20:23:32 UTC 2025","passed","Tue Nov 18 20:25:43 UTC 2025","","","",""
