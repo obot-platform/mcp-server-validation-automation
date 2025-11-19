@@ -34,9 +34,9 @@ Once you've installed the dependencies and set up your environment, you can run 
 2. **Run a specific test**:
    If you want to run a specific scenario or feature, use:
    ```bash
-   npm run wdio:byScenario --spec src/features/obot.feature:10
+   npx wdio run wdio.conf.ts --cucumberOpts.tagExpression='@gitlab'
    ```
-   Replace `10` with the line number of the scenario you want to execute.
+   Replace `@gitlab` with the tag corresponding to the scenario you want to execute.
 
 3. **Run in headless mode** (useful for CI/CD):
    You can run the tests in headless mode (without opening the browser window) by configuring the `wdio.conf.ts` file to enable headless execution, and then run the tests with:
