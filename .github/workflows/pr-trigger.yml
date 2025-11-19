@@ -1,0 +1,117 @@
+name: Run WDIO Tests with OBOT Docker
+
+on:
+  repository_dispatch:
+    types: [pr-created]
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      pr_number: ${{ steps.set-matrix.outputs.pr_number }}
+    steps:
+      - name: Set matrix data
+        id: set-matrix
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "matrix=${{ toJson(github.event.client_payload.changed_files) }}" >> $GITHUB_OUTPUT
+            echo "pr_number=${{ github.event.client_payload.pr_number }}" >> $GITHUB_OUTPUT
+          else
+            # Default empty matrix for workflow_dispatch
+            echo 'matrix=[{"file":"default","containerizedConfig":null,"env":null}]' >> $GITHUB_OUTPUT
+            echo "pr_number=" >> $GITHUB_OUTPUT
+          fi
+
+  wdio-tests:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    if: needs.prepare-matrix.outputs.matrix != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        server: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+
+    permissions:
+      id-token: write
+      actions: read
+      checks: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Cache NPM Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run OBOT container
+        run: |
+          docker run -d --name obot \
+            -p 8080:8080 \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            -e OBOT_SERVER_DISABLE_UPDATE_CHECK=true \
+            ghcr.io/obot-platform/obot:latest
+
+      - name: Wait for OBOT to be ready
+        run: |
+          echo "Waiting for OBOT container..."
+          for i in {1..12}; do
+            if curl -sf http://localhost:8080/api/me | grep -q '"username":"nobody"'; then
+              echo "OBOT API is ready."
+              break
+            fi
+            echo "Not ready yet... retry #$i"
+            sleep 5
+          done
+
+      - name: Create catalog entry
+        run: |
+          curl localhost:8080/api/mcp-catalogs/default/entries -X POST -H "Content-Type: application/json" \
+          -d '{
+            "name": "test-${{ replace(matrix.server.file, '.yaml', '') }}",
+            "description": "testing ${{ replace(matrix.server.file, '.yaml', '') }} mcp",
+            "icon": "https://avatars.githubusercontent.com/u/9919?v=4",
+            "repoURL": "https://github.com/testing/testing",
+            "runtime": "containerized",
+            "containerizedConfig": {
+              "image": "${{ matrix.server.containerizedConfig.image }}",
+              "port": ${{ matrix.server.containerizedConfig.port }},
+              "path": "${{ matrix.server.containerizedConfig.path }}",
+              "args": ${{ toJson(matrix.server.containerizedConfig.args) }
+            },
+            "metadata": {
+              "categories": "testing"
+            }
+          }'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run WDIO Tests
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+          OBOT_URL: ${{ secrets.OBOT_URL }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY}}
+        run: |
+          npx wdio run wdio.conf.ts --cucumberOpts.tagExpression='@${{ replace(matrix.server.file, '.yaml', '') }}'
