@@ -82,12 +82,19 @@ jobs:
             sleep 5
           done
 
+      - name: Remove file extension
+        env:
+          MATRIX_SERVER_FILE: ${{ matrix.server.file }}
+        run: |
+          MCP_SERVER_NAME="${MATRIX_SERVER_FILE/.yaml/}"
+          echo "MCP_SERVER_NAME=$MCP_SERVER_NAME" >> $GITHUB_ENV
+
       - name: Create catalog entry
         run: |
           curl localhost:8080/api/mcp-catalogs/default/entries -X POST -H "Content-Type: application/json" \
           -d '{
-            "name": "test-${{ replace(matrix.server.file, '.yaml', '') }}",
-            "description": "testing ${{ replace(matrix.server.file, '.yaml', '') }} mcp",
+            "name": "test-${MCP_SERVER_NAME}",
+            "description": "testing ${MCP_SERVER_NAME} mcp",
             "icon": "https://avatars.githubusercontent.com/u/9919?v=4",
             "repoURL": "https://github.com/testing/testing",
             "runtime": "containerized",
@@ -114,4 +121,4 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY}}
         run: |
-          npx wdio run wdio.conf.ts --cucumberOpts.tagExpression='@${{ replace(matrix.server.file, '.yaml', '') }}'
+          npx wdio run wdio.conf.ts --cucumberOpts.tagExpression='@${MCP_SERVER_NAME}'
