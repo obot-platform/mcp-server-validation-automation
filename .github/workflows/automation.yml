@@ -2,8 +2,6 @@ name: Run WDIO Tests with OBOT Docker
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [pr-created]
 
 jobs:
   wdio-tests:
