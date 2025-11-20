@@ -102,7 +102,7 @@ jobs:
               "image": "${{ matrix.server.containerizedConfig.image }}",
               "port": ${{ matrix.server.containerizedConfig.port }},
               "path": "${{ matrix.server.containerizedConfig.path }}",
-              "args": ${{ toJson(matrix.server.containerizedConfig.args) }
+              "args": ${{ toJson(matrix.server.containerizedConfig.args) }}
             },
             "metadata": {
               "categories": "testing"
@@ -119,6 +119,6 @@ jobs:
           WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
           OBOT_URL: ${{ secrets.OBOT_URL }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY}}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           npx wdio run wdio.conf.ts --cucumberOpts.tagExpression='@${MCP_SERVER_NAME}'
