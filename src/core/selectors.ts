@@ -102,6 +102,11 @@ const Selectors = {
     tableInput:'//pre[contains(@class, "whitespace-pre-wrap")]//span[contains(@class, "text-gray-500")]',
     showDetails2: '(//button[text()="Show Details"])[2]',
     showDetails3: '(//button[text()="Show Details"])[3]',
+    connectionsList: `//div[@class="flex flex-col"]`,
+    currentProjectButton: `//span[text()="Project"]/ancestor::button`,
+    createNewProjectButton: `//button[text()=" Create New Project"]`,
+    inputNewProjectName: '//input[@id="project-name"]',
+    saveButton: '//button[text()="Save"]',
 
     admin:{
         oktaLogin:'//button[normalize-space(.//div) = "Sign in with Okta"]',
@@ -210,22 +215,66 @@ const Selectors = {
         clickChatObot: '//button[normalize-space(text())="Chat"]',
         connectorbtn: '//p[normalize-space(text())="Connectors"]/following-sibling::button',
         mcpSearchInput: '//input[normalize-space(@placeholder)="Search by name..."]',
-        // selectMCPServer: '//p[normalize-space(text())="WordPress1"]',
         selectMCPServer: (option: string) => `//p[normalize-space(text())="${option}"]/ancestor::div[contains(@class, 'flex')]/button`,
-        wpSiteURL: '//input[normalize-space(@id)="WORDPRESS_SITE"]',
-        wpUsername: '//input[normalize-space(@id)="WORDPRESS_USERNAME"]',
-        wpPassword: '//input[normalize-space(@id)="WordPress App Password"]',
         btnClick: (option: string) => `//button[normalize-space(text())="${option}"]`,
         promptInput: '//div[@class="plaintext-editor text-md relative w-full flex-1 grow resize-none p-2 leading-8 outline-none"]',
-        // submitPrompt: '//button[@type="submit"]',
-        // obotInput: '//div[@class="ProseMirror editor"]',
-        gitlabToken: '//input[@name="GitLab Personal Access Token"]',
-        // messageContainer: "//div[contains(@class, 'flex-1') and contains(@class, 'flex-col') and contains(@class, 'justify-start') and contains(@class, 'gap-8')]",
         obotInput: "//div[contains(@class,'ProseMirror') and @contenteditable='true']",
         submitPrompt: '//button[@type="submit"]',
         lastBotReply: '//div[@class="message-content"]',
-        messageContainer: "//div[contains(@class, 'flex-1') and contains(@class, 'flex-col') and contains(@class, 'justify-start') and contains(@class, 'gap-8')]"
-      
+        messageContainer: "//div[contains(@class, 'flex-1') and contains(@class, 'flex-col') and contains(@class, 'justify-start') and contains(@class, 'gap-8')]",
+        wordpressMCP:{
+            wpSiteURL: '//input[normalize-space(@id)="WORDPRESS_SITE"]',
+            wpUsername: '//input[normalize-space(@id)="WORDPRESS_USERNAME"]',
+            wpPassword: '//input[normalize-space(@id)="WordPress App Password"]',
+        },
+        gitlabMCP:{
+            gitlabToken: '//input[@name="GitLab Personal Access Token"]',
+        },
+        bigQuery:{
+            googleCloudProjectID: '//input[@id="GOOGLE_CLOUD_PROJECT"]',
+            googleCloudCredentials: '//input[@name="Google Application Credentials"]//following-sibling::div[1]',
+        },
+        datadog:{
+            datadogAPIKey: `//input[@id="Datadog API Key"]`,
+            datadogAPPKey: `//input[@id="Datadog App Key"]`,
+        },
+        databricks:{
+            utility:{
+                workspaceHostname: `//input[@id="DATABRICKS_WORKSPACE_URL"]`,
+                functionCatalog: `//input[@id="DATABRICKS_FUNCTIONS_CATALOG"]`,
+                functionalSchema: `//input[@id="DATABRICKS_FUNCTIONS_SCHEMA"]`,
+                PAT: `//input[@id="Personal Access Token"]`,
+            },
+            vector:{
+                vectorCatalog: `//input[@id="DATABRICKS_VECTOR_SEARCH_CATALOG"]`,
+                vectorSchema: `//input[@id="DATABRICKS_VECTOR_SEARCH_SCHEMA"]`,
+            },
+            genie: {
+                genieSpaceID: `//input[@id="DATABRICKS_GENIE_SPACE_ID"]`
+            }
+        },
+        brave: {
+            braveAPIKey: `//input[@id="Brave API Key"]`
+        },
+        chromaCloud: {
+            tenentID: `//input[@id="CHROMA_TENANT"]`,
+            DBName: `input[@id="CHROMA_DATABASE"]`,
+            APIKey: `//input[@id="Chroma Cloud API Key"]`
+        },
+        fireCrawl: {
+            API_key: `//input[@id="Firecrawl API Key"]`
+        },
+        gitMCP: {
+            urlLink: `//input[@id="url-manifest-url"]`
+        },
+        redis: {
+            urlLink: `//input[@id="REDIS_URI"]`
+        },
+        postman: {
+            hostURL: `//input[@id="HOST_URL"]`,
+            toolCOnfig: `//input[@id="TOOL_CONFIGURATION"]`,
+            postmanAPIKey: `//input[@id="Postman API Key"]`,
+        }
     }
 }
 export default Selectors;
