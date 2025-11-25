@@ -39,3 +39,8 @@ Feature: Connect MCP servers on Obot
             | aws_kendra                  | AWS Kendra                         | AWS Kendra       | AWS Kendra       |
             | aws_knowledge               | AWS Knowledge                      | AWS Knowledge    | AWS Knowledge    |
             | aws_redshift                | AWS Redshift                       | AWS Redshift     | AWS Redshift     |
+            | context7                    | Context7                           | Context7         | Context7         |
+            | paperduty                   | PaperDuty                          | PaperDuty        | PaperDuty        |
+            | markitdown                  | MarkItDown                         | MarkItDown       | MarkItDown       |
+            | microsoft-docs              | Microsoft Learn                    | Microsoft Learn  | Microsoft Learn  |
+            | duckduckgo_search           | DuckDuckGo Search                  | DuckDuckGo Search| DuckDuckGo Search|
