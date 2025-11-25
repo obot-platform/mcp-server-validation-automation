@@ -82,6 +82,8 @@ Then(/^All prompt results should be validated and a report generated for the sel
 });
 
 Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
+	let switchLaunch = false;
+
 	switch (mcpServer.toLowerCase()) {
 		case 'wordpress':
 		await slowInputFilling(Selectors.MCP.wordpressMCP.wpSiteURL, process.env.WP_URL);
@@ -152,6 +154,10 @@ Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
 		case 'exa search':
 		await slowInputFilling('//input[@id="Exa API Key"]', process.env.TAVILY_API_KEY);
 		break;
+		
+		case 'paperduty':
+		await slowInputFilling('//input[@id="PagerDuty API Key"]', process.env.PAPERDUTY_API_KEY);
+		break;
 
 		case 'postman':
 		await slowInputFilling(Selectors.MCP.postman.hostURL, 'https://mcp.postman.com');
@@ -159,14 +165,34 @@ Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
 		await slowInputFilling(Selectors.MCP.postman.postmanAPIKey, process.env.POSTMAN_API_KEY);
 		break;
 
+		case 'aws api':
+		case 'aws cdk':
+		case 'aws documentation':
+		case 'aws eks':
+		case 'aws kendra':
+		case 'aws redshift':
+		await slowInputFilling(`//input[@id="AWS Access Key ID"]`, process.env.AWS_KEY_ID);
+		await slowInputFilling(`//input[@id="AWS Secret Access Key"]`, process.env.AWS_ACCESS_ID);
+		break;
+
 		case 'deepwiki':
+		case 'context7':
+		break;
+
+		case 'duckduckgo search':
+		case 'markitdown':
+		case 'microsoft learn':
+		case 'aws knowledge':
+		switchLaunch = true;
 		break;
 
 		default:
 		throw new Error(`Unknown MCP Server: ${mcpServer}`);
 	}
 
+	if(!switchLaunch) {
 	await clickToElement(Selectors.MCP.btnClick('Launch'));
+	};
 	await browser.pause(LONG_PAUSE * 2);
 });
 
