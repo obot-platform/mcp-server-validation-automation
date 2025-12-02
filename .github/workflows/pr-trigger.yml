@@ -104,6 +104,7 @@ jobs:
               "path": "${{ matrix.server.containerizedConfig.path }}",
               "args": ${{ toJson(matrix.server.containerizedConfig.args) }}
             },
+            "env": ${{ toJson(matrix.server.env) }},
             "metadata": {
               "categories": "testing"
             }
