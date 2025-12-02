@@ -15,7 +15,9 @@ jobs:
         id: set-matrix
         run: |
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
-            echo "matrix=${{ toJson(github.event.client_payload.changed_files) }}" >> $GITHUB_OUTPUT
+          echo "matrix<<EOF" >> $GITHUB_OUTPUT
+          echo '${{ toJson(github.event.client_payload.changed_files) }}' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
             echo "pr_number=${{ github.event.client_payload.pr_number }}" >> $GITHUB_OUTPUT
           else
             # Default empty matrix for workflow_dispatch
