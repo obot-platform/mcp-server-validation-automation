@@ -15,32 +15,32 @@ Feature: Connect MCP servers on Obot
         Then All prompt results should be validated and a report generated for the selected "<ReportName>" MCP server
 
         Examples:
-            | ServerName                  | ConnectionName                     | PromptName       | ReportName       |
-            | wordpress                   | WordPress                          | WordPress        | WordPress        |
-            | gitlab                      | GitLab                             | GitLab           | GitLab           |
-            | bigquery                    | BigQuery                           | BigQuery Toolbox | BigQuery Toolbox |
-            # | datadog                     | Datadog                            | Datadog          | Datadog          |
-            | databricks_uc_functions     | Databricks Unity Catalog Functions | Databrick Unity  | Databrick Unity  |
-            | databricks_genie            | Databricks Genie Space             | Databrick Genie  | Databrick Genie  |
-            | databricks_vector_search    | Databricks Vector Space            | Databrick Vector | Databrick Vector |
-            | brave_search                | Brave Search                       | Brave Search     | Brave Search     |
-            | chroma                      | Chroma Cloud                       | Chroma Cloud     | Chroma Cloud     |
-            | firecrawl                   | Firecrawl                          | Firecrawl        | Firecrawl        |
-            | gitmcp                      | GitMCP                             | GitMCP           | GitMCP           |
-            | redis                       | Redis                              | Redis            | Redis            |
-            # | postman                     | Postman                            | Postman          | Postman          |
-            | tavily_search               | Tavily Search                      | Tavily Search    | Tavily Search    |
-            | exa_search                  | Exa Search                         | Exa Search       | Exa Search       |
-            | deepwiki                    | DeepWiki                           | DeepWiki         | DeepWiki         |
-            | aws                         | AWS API                            | AWS API          | AWS API          |
-            | aws_cdk                     | AWS CDK                            | AWS CDK          | AWS CDK          |
-            | aws_documentation           | AWS Documentation                  | AWS Documentation| AWS Documentation|
-            | aws_eks                     | AWS EKS                            | AWS EKS          | AWS EKS          |
-            | aws_kendra                  | AWS Kendra                         | AWS Kendra       | AWS Kendra       |
-            | aws_knowledge               | AWS Knowledge                      | AWS Knowledge    | AWS Knowledge    |
-            | aws_redshift                | AWS Redshift                       | AWS Redshift     | AWS Redshift     |
-            | context7                    | Context7                           | Context7         | Context7         |
-            | paperduty                   | PaperDuty                          | PaperDuty        | PaperDuty        |
-            | markitdown                  | MarkItDown                         | MarkItDown       | MarkItDown       |
-            | microsoft-docs              | Microsoft Learn                    | Microsoft Learn  | Microsoft Learn  |
-            | duckduckgo_search           | DuckDuckGo Search                  | DuckDuckGo Search| DuckDuckGo Search|
+            | ServerName                       | ConnectionName                     | PromptName       | ReportName       |
+            | test-wordpress                   | WordPress                          | WordPress        | WordPress        |
+            | test-gitlab                      | GitLab                             | GitLab           | GitLab           |
+            | test-bigquery                    | BigQuery                           | BigQuery Toolbox | BigQuery Toolbox |
+            # | test-datadog                     | Datadog                            | Datadog          | Datadog          |
+            | test-databricks_uc_functions     | Databricks Unity Catalog Functions | Databrick Unity  | Databrick Unity  |
+            | test-databricks_genie            | Databricks Genie Space             | Databrick Genie  | Databrick Genie  |
+            | test-databricks_vector_search    | Databricks Vector Space            | Databrick Vector | Databrick Vector |
+            | test-brave_search                | Brave Search                       | Brave Search     | Brave Search     |
+            | test-chroma                      | Chroma Cloud                       | Chroma Cloud     | Chroma Cloud     |
+            | test-firecrawl                   | Firecrawl                          | Firecrawl        | Firecrawl        |
+            | test-gitmcp                      | GitMCP                             | GitMCP           | GitMCP           |
+            | test-redis                       | Redis                              | Redis            | Redis            |
+            # | test-postman                     | Postman                            | Postman          | Postman          |
+            | test-tavily_search               | Tavily Search                      | Tavily Search    | Tavily Search    |
+            | test-exa_search                  | Exa Search                         | Exa Search       | Exa Search       |
+            | test-deepwiki                    | DeepWiki                           | DeepWiki         | DeepWiki         |
+            | test-aws                         | AWS API                            | AWS API          | AWS API          |
+            | test-aws_cdk                     | AWS CDK                            | AWS CDK          | AWS CDK          |
+            | test-aws_documentation           | AWS Documentation                  | AWS Documentation| AWS Documentation|
+            | test-aws_eks                     | AWS EKS                            | AWS EKS          | AWS EKS          |
+            | test-aws_kendra                  | AWS Kendra                         | AWS Kendra       | AWS Kendra       |
+            | test-aws_knowledge               | AWS Knowledge                      | AWS Knowledge    | AWS Knowledge    |
+            | test-aws_redshift                | AWS Redshift                       | AWS Redshift     | AWS Redshift     |
+            | test-context7                    | Context7                           | Context7         | Context7         |
+            | test-paperduty                   | PaperDuty                          | PaperDuty        | PaperDuty        |
+            | test-markitdown                  | MarkItDown                         | MarkItDown       | MarkItDown       |
+            | test-microsoft-docs              | Microsoft Learn                    | Microsoft Learn  | Microsoft Learn  |
+            | test-duckduckgo_search           | DuckDuckGo Search                  | DuckDuckGo Search| DuckDuckGo Search|
