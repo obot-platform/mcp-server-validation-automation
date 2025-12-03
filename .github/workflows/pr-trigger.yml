@@ -124,4 +124,4 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          npx wdio run wdio.conf.ts --cucumberOpts.name='test-${MCP_SERVER_NAME}'
+          npx wdio run wdio.conf.ts --cucumberOpts.name="test-${MCP_SERVER_NAME}"
