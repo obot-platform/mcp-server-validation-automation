@@ -100,7 +100,7 @@ jobs:
           COUNT=0
           SLEEP_SECONDS=2
 
-          while [ COUNT -lt MAX_RETRIES ]; do
+          while [ $COUNT -lt $MAX_RETRIES ]; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "localhost:8080/api/mcp-catalogs/default/entries")
 
             if [[ "$STATUS" != "404" ]]; then
