@@ -4,6 +4,8 @@ on:
   repository_dispatch:
     types: [pr-created]
 
+run-name: pr-${{ github.event.client_payload.pr_number }}-${{ github.event.client_payload.correlation_id }}
+
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
@@ -15,7 +17,9 @@ jobs:
         id: set-matrix
         run: |
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
-            echo "matrix=${{ toJson(github.event.client_payload.changed_files) }}" >> $GITHUB_OUTPUT
+          echo "matrix<<EOF" >> $GITHUB_OUTPUT
+          echo '${{ toJson(github.event.client_payload.changed_files) }}' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
             echo "pr_number=${{ github.event.client_payload.pr_number }}" >> $GITHUB_OUTPUT
           else
             # Default empty matrix for workflow_dispatch
@@ -104,6 +108,7 @@ jobs:
               "path": "${{ matrix.server.containerizedConfig.path }}",
               "args": ${{ toJson(matrix.server.containerizedConfig.args) }}
             },
+            "env": ${{ toJson(matrix.server.env) }},
             "metadata": {
               "categories": "testing"
             }
