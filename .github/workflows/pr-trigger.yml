@@ -95,13 +95,12 @@ jobs:
 
       - name: Create catalog entry
         run: |
-
           echo "Waiting for default catalog..."
           MAX_RETRIES=20
           COUNT=0
           SLEEP_SECONDS=2
 
-          while (( COUNT < MAX_RETRIES )); do
+          while [ COUNT -lt MAX_RETRIES ]; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "localhost:8080/api/mcp-catalogs/default/entries")
 
             if [[ "$STATUS" != "404" ]]; then
@@ -111,7 +110,7 @@ jobs:
 
             echo "Still 404... retrying in $SLEEP_SECONDS seconds."
             sleep "$SLEEP_SECONDS"
-            ((COUNT++))
+            COUNT=$((COUNT + 1))
           done
 
           curl localhost:8080/api/mcp-catalogs/default/entries -X POST -H "Content-Type: application/json" \
