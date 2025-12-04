@@ -114,7 +114,8 @@ jobs:
           done
 
           curl localhost:8080/api/mcp-catalogs/default/entries -X POST -H "Content-Type: application/json" \
-          -d '{
+          -d @<(cat <<EOF
+          {
             "name": "test-${MCP_SERVER_NAME}",
             "description": "testing ${MCP_SERVER_NAME} mcp",
             "icon": "https://avatars.githubusercontent.com/u/9919?v=4",
@@ -130,7 +131,8 @@ jobs:
             "metadata": {
               "categories": "testing"
             }
-          }'
+          }
+          EOF
 
       - name: Install dependencies
         run: npm ci
