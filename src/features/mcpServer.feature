@@ -8,7 +8,7 @@ Feature: Connect MCP servers on Obot
 
     Scenario Outline: Validate <ServerName> MCP Server sequential prompts on Obot
         When User opens the MCP connector page
-        And User selects "<ConnectionName>" MCP server
+        And User selects "<ServerName>" MCP server
         And User selects "Connect To Server" button
         And User connects to the "<ConnectionName>" MCP server
         When User sends prompts to Obot AI chat for "<PromptName>" MCP server
