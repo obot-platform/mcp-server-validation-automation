@@ -4,6 +4,8 @@ on:
   repository_dispatch:
     types: [pr-created]
 
+run-name: pr-${{ github.event.client_payload.pr_number }}-${{ github.event.client_payload.correlation_id }}
+
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
