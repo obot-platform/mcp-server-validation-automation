@@ -116,8 +116,8 @@ jobs:
 
           curl localhost:8080/api/mcp-catalogs/default/entries -X POST -H "Content-Type: application/json" \
           -d '{
-            "name": '"test-${MCP_SERVER_NAME}"',
-            "description": '"testing ${MCP_SERVER_NAME} mcp"',
+            "name": "'"test-${MCP_SERVER_NAME}"'",
+            "description": "'"testing ${MCP_SERVER_NAME} mcp"'",
             "icon": "https://avatars.githubusercontent.com/u/9919?v=4",
             "repoURL": "https://github.com/testing/testing",
             "runtime": "containerized",
