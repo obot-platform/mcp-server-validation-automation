@@ -274,7 +274,13 @@ const Selectors = {
             hostURL: `//input[@id="HOST_URL"]`,
             toolCOnfig: `//input[@id="TOOL_CONFIGURATION"]`,
             postmanAPIKey: `//input[@id="Postman API Key"]`,
-        }
+        },
+        googleCloudRun: {
+            googleCloudCredentials: '//input[@name="Google Application Credentials"]//following-sibling::div[1]',
+        },
+        grafana: {
+            grafanaURL: '//input[@id="GRAFANA_URL"]',
+        },
     }
 }
 export default Selectors;
