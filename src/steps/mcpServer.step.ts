@@ -82,7 +82,7 @@ Then(/^All prompt results should be validated and a report generated for the sel
 });
 
 Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
-	let switchLaunch = false;
+	let skipLaunch = false;
 
 	switch (mcpServer.toLowerCase()) {
 		case 'wordpress':
@@ -165,6 +165,14 @@ Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
 		await slowInputFilling(Selectors.MCP.postman.postmanAPIKey, process.env.POSTMAN_API_KEY);
 		break;
 
+		case 'google cloud run':
+		await $(Selectors.MCP.googleCloudRun.googleCloudCredentials).setValue(process.env.GCLOUD_APP_CREDS);
+		break;
+
+		case 'grafana':
+		await slowInputFilling(Selectors.MCP.grafana.grafanaURL, process.env.GRAFANA_URL);
+		break;
+
 		case 'aws api':
 		case 'aws cdk':
 		case 'aws documentation':
@@ -183,14 +191,15 @@ Then(/^User connects to the "(.*)" MCP server$/, async (mcpServer: string) => {
 		case 'markitdown':
 		case 'microsoft learn':
 		case 'aws knowledge':
-		switchLaunch = true;
+		case 'antv charts':
+		skipLaunch = true;
 		break;
 
 		default:
 		throw new Error(`Unknown MCP Server: ${mcpServer}`);
 	}
 
-	if(!switchLaunch) {
+	if(!skipLaunch) {
 	await clickToElement(Selectors.MCP.btnClick('Launch'));
 	};
 	await browser.pause(LONG_PAUSE * 2);

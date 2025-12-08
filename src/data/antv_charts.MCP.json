@@ -1,0 +1,31 @@
+{
+  "prompts": [
+    "Sample Data:\n{\n  \"data\": [\n    {\"category\": \"A\", \"value\": 120, \"date\": \"2025-01-01\"},\n    {\"category\": \"B\", \"value\": 200, \"date\": \"2025-01-02\"},\n    {\"category\": \"C\", \"value\": 150, \"date\": \"2025-01-03\"}\n  ],\n  \"options\": {\n    \"title\": \"Sample Title\",\n    \"xField\": \"date\",\n    \"yField\": \"value\",\n    \"seriesField\": \"category\"\n  }\n}\nUse this sample data as a reference for the following prompts.",
+    "Render an area chart showing daily totals for 7 days using the provided data. Use xField=date, yField=value, show tooltip and legend.",
+    "Render a vertical bar chart of categories A–E with values. xField=category, yField=value, show axis labels and value labels on bars.",
+    "Render a column chart for monthly revenue (Jan–Dec). xField=month, yField=revenue, show gridlines and formatted currency y-axis.",
+    "Render a line chart for time series (daily) with markers on each point. xField=date, yField=value, enable tooltip and zoom (brush) interaction.",
+    "Render a pie chart of market share by category (A,B,C). Show percentage labels on slices and legend.",
+    "Render scatter plot of points with fields x and y. Show tooltip with both coordinates and category.",
+    "Render histogram for a numeric field 'score' using 10 bins. Show count per bin and x-axis bin ranges.",
+    "Render boxplot for 'score' grouped by 'category' (A,B,C). Show median, IQR, whiskers and outliers.",
+    "Render violin plots for distribution of 'value' by category. Show KDE shape and median line.",
+    "Render radar chart comparing two items across 5 metrics (speed, reliability, cost, ease, popularity). Show labels on axes and polygon fills.",
+    "Render funnel chart for conversion stages: Visit (1000), Signup (200), Trial (80), Purchase (20). Show stage labels and conversion percentages.",
+    "Render a Sankey diagram for flows: A->B:100, A->C:50, B->D:80, C->D:70. Nodes labeled and link widths proportional to flow."
+  ],
+  "tools": [
+    "generate_area_chart",
+    "generate_bar_chart",
+    "generate_column_chart",
+    "generate_line_chart",
+    "generate_pie_chart",
+    "generate_scatter_chart",
+    "generate_histogram_chart",
+    "generate_boxplot_chart",
+    "generate_violin_chart",
+    "generate_radar_chart",
+    "generate_funnel_chart",
+    "generate_sankey_chart"
+  ]
+}
