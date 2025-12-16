@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"ace95864e4b972243d5a1647dad0d174","name":"Connecte MCP server on Obot","statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2}}]}
+{"total":1,"items":[{"uid":"d011290f3e01165dae2bf1e8ead82d79","name":"Connect MCP servers on Obot","statistic":{"failed":0,"broken":29,"skipped":0,"passed":0,"unknown":0,"total":29}}]}
